@@ -20,7 +20,7 @@ print(f"Loaded {len(image_list)} images.")
 # next, I do image resizing to make sure that I'm able to create masks that are consistent
 # with the size of the base image that I am going to multiply with
 def resize_with_padding(img, target_size):
-\
+
     h, w = img.shape[:2]
     target_h, target_w = target_size
 
@@ -51,6 +51,8 @@ resized_images = [resize_with_padding(img, (ref_h, ref_w)) for img in image_list
 # an interactive selection tool that lets me pick out points on matplotlib. These points
 # will make a polygon that will be "masked" out of the previous images and blended into the final
 # image to make a new car!
+
+# TRY: Bring all images to canonical size
 
 def select_polygon(image, target_size):
     points = []

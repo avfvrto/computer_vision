@@ -38,15 +38,18 @@ aligned_images = [base_image] # here we initialize the list of aligned images, s
 # will be used to align the stack of images with one another. It will be used with a BF (brute force)
 # matcher that will calculate how far the ORB's detected points are from each other
 
-orb = cv2.ORB_create(500)  # create ORB once
-bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
+# TRY: SIFT, RANSAC see: history of gaussian
+orb = cv2.ORB_create(500)  # this determines number of keypoints or features (Higher better but slower)
+bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True) # use a brute force matcher to match features made by the ORB
 
 # Compute base keypoints/descriptors once
 base_image_gray = cv2.cvtColor(base_image, cv2.COLOR_BGR2GRAY) if base_image.ndim == 3 else base_image
-kp1, des1 = orb.detectAndCompute(base_image_gray, None)
+kp1, des1 = orb.detectAndCompute(base_image_gray, None) # detect keypoints
 
 # here we use a for-loop and iteratre through the image_list to match the features
 # of each image to the base and calculate a transformation matrix to align them
+
+# first image as first 
 for i, img in enumerate(image_list[1:], start=2):
     img_resized = cv2.resize(img, (w,h))
     img_gray = cv2.cvtColor(img_resized, cv2.COLOR_BGR2GRAY) if img_resized.ndim == 3 else img_resized
@@ -65,6 +68,8 @@ for i, img in enumerate(image_list[1:], start=2):
     # Compute homography
     H, _ = cv2.findHomography(pts2, pts1, cv2.RANSAC)
     
+    # NOTE: First filter out junk, find histogram of gaussian, then use matching
+    
     # once the homography is computed, we use the H matrix to do an affine transform and 
     # align the current image to the base and append it to the aligned list
     aligned = cv2.warpPerspective(img_resized, H, (w,h)) 
@@ -74,6 +79,7 @@ for i, img in enumerate(image_list[1:], start=2):
 # Next, we have to add all the images and then normalize them for displaying.
 # this needs to be done because the iamges may not follow standard 0-255 values and be difficult
 # to display or have irregularities
+
 stack = np.stack(aligned_images, axis=0)  
 sum_image = np.sum(stack, axis=0)      
 sum_image_norm = cv2.normalize(sum_image, None, 0, 255, cv2.NORM_MINMAX)

@@ -48,6 +48,8 @@ for i, diff in enumerate(diff_images, start=1):
     plt.title(f"Difference Frame {i} → {i+1}")
     plt.axis('off')
     plt.show()
+    
+# add left right, subtract from center
 
 # The results shown in the image file outputs (Figures 1-4 PNGs) show images in black and white, where the
 # lighter parts explain areas of the image with a larger difference from the previous image. In the image set
