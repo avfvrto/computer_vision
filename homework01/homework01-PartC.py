@@ -1,5 +1,9 @@
 import cv2
 import numpy as np
+# import matplotlib.pyplot as plt
+
+import matplotlib
+matplotlib.use('TkAgg')
 import matplotlib.pyplot as plt
 from matplotlib.widgets import PolygonSelector
 from matplotlib.path import Path as MplPath
@@ -7,7 +11,7 @@ from pathlib import Path
 
 # Here I load several images of vehicles oriented similarly that I found
 # I used five images and loaded them into a list
-part1_fp = Path(r'homework01/files/partC/raw_images')
+part1_fp = Path(r'/Users/ainee_f/Documents/school_docs/computer_vision/homework01/files/partC/raw_images')
 image_list = []
 
 for file in sorted(part1_fp.iterdir()):
